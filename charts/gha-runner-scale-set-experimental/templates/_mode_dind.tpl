@@ -16,6 +16,10 @@ volumeMounts:
   - name: dind-sock
     mountPath: {{ include "runner-mode-dind.sock-mount-dir" . | quote }}
   {{ include "githubServerTLS.volumeMountItem" (dict "root" $ "existingVolumeMounts" (list)) | nindent 2 }}
+{{- $extra := omit $dindContainer "name" "image" "env" "volumeMounts" -}}
+{{- if not (empty $extra) -}}
+{{ toYaml $extra }}
+{{- end -}}
 {{- end }}
 
 {{- define "runner-mode-dind.dind-container" -}}
